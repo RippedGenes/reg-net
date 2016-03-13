@@ -2,8 +2,9 @@
 
 import string
 import itertools as it
-import networkx as nx
-import matplotlib.pyplot as plt
+import graphviz as gv
+# import networkx as nx
+# import matplotlib.pyplot as plt
 
 
 def Solve(num_nodes, cycles_list):
@@ -182,17 +183,37 @@ def value_to_string(number, alphabet):
     return string
 
 def DrawGraph(nodes):
-    alphabet = list(string.ascii_uppercase)
+  '''
+  params:
+  	nodes:
+		  results, dictionary with key being nodes and value being possible expressions for it, e.g.
+		  {1: [(-1, 2), (-3, 2)], 2: [(-3, 1), (-2, 1)], 3: [(1, 3), (2, 3), (1, 2), (-2, 3), (-1, 3)]}
+  returns:
+	  Nothing. It produces all produces all graphs and places in the img folder
+  '''
+  alphabet = list(string.ascii_uppercase)
 
-    G = nx.DiGraph()
-    for n in nodes:
-        outfrom = nodes[n][0]
-        into = n
-        for out in outfrom:
-##            c = 'green' if out > 0 else 'red'
-            G.add_edges_from([(alphabet[abs(out)], alphabet[into])])
+  graph_fodder = []
+  for n in nodes:
+    expressions = []
+    for expression in nodes[n]:
+      e = []
+      e.append(n)
+      e.extend(list(expression))
+      expressions.append(e)
+    graph_fodder.append(expressions)
 
-    pos=nx.spring_layout(G)
-##    nx.draw_networkx_edge_labels(G,pos)
-    nx.draw_shell(G)
-    plt.show()
+
+  possibilities = list(it.product(*graph_fodder))
+
+  # print possibilities
+
+  for i,p in enumerate(possibilities):
+    G = gv.Digraph(format='svg')
+    for nodes in p:
+      into = nodes[0]
+      for out in nodes[1:]:
+        c = 'green' if out > 0 else 'red'
+        G.edge(alphabet[abs(out)], alphabet[into], color = c)
+  	G.render("img/graph"+str(i))
+
