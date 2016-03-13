@@ -3,6 +3,7 @@
 import string
 import itertools as it
 
+
 def Solve(num_nodes, cycles_list):
     '''
     params:
@@ -24,7 +25,7 @@ def Solve(num_nodes, cycles_list):
                 - A = A && B
                 - B = !B && !A
     '''
-    nodes = [i for i in range(1,num_nodes+1)]
+    nodes = [i for i in range(1, num_nodes + 1)]
     possible_expressions = GenerateExpressions(num_nodes, nodes)
 
     # Init all posibilities for each node.
@@ -35,9 +36,10 @@ def Solve(num_nodes, cycles_list):
         # Based on ALL cycles reduce the possibilities to only legal expressions.
         for cycle in cycles_list:
             result[n] = RemoveIllegalExpressions(n, result[n], cycle)
-##    print result
+        ##    print result
     solution_list = ListOfSolutions(result)
     return solution_list
+
 
 def GenerateExpressions(num_nodes, nodes):
     '''
@@ -60,11 +62,11 @@ def GenerateExpressions(num_nodes, nodes):
     domain = []
     for n in nodes:
         domain.append(n)
-        domain.append(n*-1)
-        duplicates.append((n,n))
-        duplicates.append((n,n*-1))
-        duplicates.append((n*-1, n))
-        duplicates.append((n*-1,n*-1))
+        domain.append(n * -1)
+        duplicates.append((n, n))
+        duplicates.append((n, n * -1))
+        duplicates.append((n * -1, n))
+        duplicates.append((n * -1, n * -1))
 
     domains = []
     for i in range(2):
@@ -82,7 +84,6 @@ def GenerateExpressions(num_nodes, nodes):
     expressions.difference_update(duplicates)
     expressions = list(expressions)
     return expressions
-
 
 
 def RemoveIllegalExpressions(index, expressions, cycle):
@@ -104,7 +105,7 @@ def RemoveIllegalExpressions(index, expressions, cycle):
     for i in range(n):
         to_remove = []
         for e in reduced_list:
-            if not EvaluateExpression(index, cycle[i], cycle[(i+1)%n], e):
+            if not EvaluateExpression(index, cycle[i], cycle[(i + 1) % n], e):
                 to_remove.append(e)
         for tr in to_remove:
             reduced_list.remove(tr)
@@ -113,11 +114,12 @@ def RemoveIllegalExpressions(index, expressions, cycle):
 
 def EvaluateExpression(index, prev_state, curr_state, expression):
     i1 = abs(expression[0]) - 1
-    v1 = prev_state[i1]^(expression[0] < 0)
+    v1 = prev_state[i1] ^ (expression[0] < 0)
     i2 = abs(expression[1]) - 1
-    v2 = prev_state[i2]^(expression[1] < 0)
-    result = (curr_state[index-1] == (v1 and v2))
+    v2 = prev_state[i2] ^ (expression[1] < 0)
+    result = (curr_state[index - 1] == (v1 and v2))
     return result
+
 
 def ListOfSolutions(results):
     '''
@@ -138,7 +140,7 @@ def ListOfSolutions(results):
             value2 = possibilities[1]
 
             solutions_list.append((alphabet[node] + " = " + value_to_string(value1, alphabet) + \
-                " AND " + value_to_string(value2, alphabet)))
+                                   " AND " + value_to_string(value2, alphabet)))
 
     return solutions_list
 
@@ -151,4 +153,3 @@ def value_to_string(number, alphabet):
         string += "NOT "
     string += alphabet[abs(number)]
     return string
-
