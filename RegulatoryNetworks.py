@@ -93,12 +93,15 @@ def GenerateExpressions(num_nodes, nodes):
 def RemoveIllegalExpressions(index, expressions, cycle):
     reduced_list = list(expressions)
     n = len(cycle)
-##    print "CYCLE: ", cycle
+    print "NUMBER OF CYCLE: ", n
     # for each cycle
     for i in range(n):
+        to_remove = []
         for e in reduced_list:
             if not EvaluateExpression(index, cycle[i], cycle[(i+1)%n], e):
-                reduced_list.remove(e)
+                to_remove.append(e)
+        for tr in to_remove:
+            reduced_list.remove(tr)
     return reduced_list
 
 
