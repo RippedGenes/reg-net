@@ -190,7 +190,7 @@ def value_to_string(number, alphabet):
     string = ""
     if number < 0:
         string += "NOT "
-    string += alphabet[abs(number)]
+    string += alphabet[abs(number)-1]
     return string
 
 def DrawGraph(nodes):
@@ -225,6 +225,6 @@ def DrawGraph(nodes):
       into = nodes[0]
       for out in nodes[1:]:
         c = 'green' if out > 0 else 'red'
-        G.edge(alphabet[abs(out)], alphabet[into], color = c)
+        G.edge(alphabet[abs(out)-1], alphabet[into-1], color = c)
   	G.render("img/graph"+str(i))
 
