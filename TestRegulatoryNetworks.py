@@ -1,5 +1,6 @@
 from RegulatoryNetworks import Solve, EvaluateExpression
 
+
 def PrettyPrint(list_of_solutions):
     for solution in list_of_solutions:
         print solution
@@ -12,6 +13,7 @@ def RunTests():
 
 def main():
     RunTests()
+
 
 if __name__ == '__main__':
     main()
