@@ -87,7 +87,7 @@ def GenerateExpressions(num_nodes, nodes):
 
 def RemoveIllegalExpressions(index, expressions, cycle):
     '''
-    inputs:
+    params:
         index:
             index of node who's expressions we are checking
         expressions:
@@ -95,7 +95,7 @@ def RemoveIllegalExpressions(index, expressions, cycle):
         cycle:
             the cycle to check the expressions through
 
-    outputs:
+    returns:
         list of expressions still valid after the checks
     '''
     reduced_list = list(expressions)
@@ -112,6 +112,21 @@ def RemoveIllegalExpressions(index, expressions, cycle):
 
 
 def EvaluateExpression(index, prev_state, curr_state, expression):
+    '''
+    params:
+        index:
+            index of node who's expressions we are checking
+        prev_state:
+            previous state,i.e. get the values of the expression from this state
+        curr_state:
+            current state,i.e. get the value of the index node from this state
+        expression:
+            the expression with which to compare the index node to
+
+    returns:
+        True or False depending if the expression holds or not
+    '''
+
     i1 = abs(expression[0]) - 1
     v1 = prev_state[i1]^(expression[0] < 0)
     i2 = abs(expression[1]) - 1
@@ -121,12 +136,12 @@ def EvaluateExpression(index, prev_state, curr_state, expression):
 
 def PrintSolution(results):
     '''
-    inputs:
+    params:
         results:
             dictionary where key is the node, and value are a list of tuples
             representing the possible inputs to the node
-    outputs:
-        None
+    returns:
+        Solution string
     '''
     alphabet = list(string.ascii_uppercase)
     if len(results) > len(alphabet):
@@ -140,7 +155,15 @@ def PrintSolution(results):
                 " AND ", value_to_string(value2, alphabet)
 
 def value_to_string(number, alphabet):
-    '''Changes node number to alphabet notation and includes "NOT for negatives
+    '''
+    params:
+        number:
+            node value
+        alphabet:
+            a list of the capital letters
+    returns:
+        a string with node number changed to alphabet notation and including
+        "NOT" for negatives
     '''
     string = ""
     if number < 0:
