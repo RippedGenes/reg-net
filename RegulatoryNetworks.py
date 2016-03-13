@@ -3,8 +3,6 @@
 import string
 import itertools as it
 
-ALPHABET = ['ABCDEFGHIJKLMNOPQRSTUVWXYZ']
-
 def Solve(num_nodes, cycles_list):
     '''
     params:
@@ -26,9 +24,6 @@ def Solve(num_nodes, cycles_list):
                 - A = A && B
                 - B = !B && !A
     '''
-##    alphabet = list(string.ascii_uppercase)
-##    if num_nodes > len(alphabet):
-##        raise Exception("Cannot pass more than %d nodes" % len(alphabet))
     nodes = [i for i in range(1,num_nodes+1)]
     possible_expressions = GenerateExpressions(num_nodes, nodes)
 
@@ -41,7 +36,8 @@ def Solve(num_nodes, cycles_list):
         for cycle in cycles_list:
             result[n] = RemoveIllegalExpressions(n, result[n], cycle)
 ##    print result
-    PrintSolution(result)
+    solution_string = PrintSolution(result)
+    return solution_string
 
 def GenerateExpressions(num_nodes, nodes):
     '''
@@ -59,6 +55,7 @@ def GenerateExpressions(num_nodes, nodes):
             ("!A","B")
         ]
     '''
+
     duplicates = []
     domain = []
     for n in nodes:
@@ -89,6 +86,18 @@ def GenerateExpressions(num_nodes, nodes):
 
 
 def RemoveIllegalExpressions(index, expressions, cycle):
+    '''
+    inputs:
+        index:
+            index of node who's expressions we are checking
+        expressions:
+            list of expression to check
+        cycle:
+            the cycle to check the expressions through
+
+    outputs:
+        list of expressions still valid after the checks
+    '''
     reduced_list = list(expressions)
     n = len(cycle)
     # for each cycle
@@ -114,22 +123,28 @@ def PrintSolution(results):
     '''
     inputs:
         results:
-            dictionary where key is node, and value are tuples representing the
-            possible inputs to the node
+            dictionary where key is the node, and value are a list of tuples
+            representing the possible inputs to the node
     outputs:
         None
     '''
+    alphabet = list(string.ascii_uppercase)
+    if len(results) > len(alphabet):
+        raise Exception("Cannot pass more than %d nodes" % len(alphabet))
     for node in results:
         for possibilities in results[node]:
             value1 = possibilities[0]
             value2 = possibilities[1]
 
-            print node, " = ", value_to_string(value1), " AND ", value_to_string(value2)
+            print alphabet[node], " = ", value_to_string(value1, alphabet), \
+                " AND ", value_to_string(value2, alphabet)
 
-def value_to_string(number):
+def value_to_string(number, alphabet):
+    '''Changes node number to alphabet notation and includes "NOT for negatives
+    '''
     string = ""
     if number < 0:
         string += "NOT "
-    string += str(abs(number))
+    string += alphabet[abs(number)]
     return string
 
