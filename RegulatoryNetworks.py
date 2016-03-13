@@ -36,8 +36,8 @@ def Solve(num_nodes, cycles_list):
         for cycle in cycles_list:
             result[n] = RemoveIllegalExpressions(n, result[n], cycle)
 ##    print result
-    solution_string = PrintSolution(result)
-    return solution_string
+    solution_list = ListOfSolutions(result)
+    return solution_list
 
 def GenerateExpressions(num_nodes, nodes):
     '''
@@ -134,7 +134,7 @@ def EvaluateExpression(index, prev_state, curr_state, expression):
     result = (curr_state[index-1] == (v1 and v2))
     return result
 
-def PrintSolution(results):
+def ListOfSolutions(results):
     '''
     params:
         results:
@@ -143,6 +143,7 @@ def PrintSolution(results):
     returns:
         Solution string
     '''
+    solutions_list = []
     alphabet = list(string.ascii_uppercase)
     if len(results) > len(alphabet):
         raise Exception("Cannot pass more than %d nodes" % len(alphabet))
@@ -151,8 +152,11 @@ def PrintSolution(results):
             value1 = possibilities[0]
             value2 = possibilities[1]
 
-            print alphabet[node], " = ", value_to_string(value1, alphabet), \
-                " AND ", value_to_string(value2, alphabet)
+            solutions_list.append((alphabet[node] + " = " + value_to_string(value1, alphabet) + \
+                " AND " + value_to_string(value2, alphabet)))
+
+    return solutions_list
+
 
 def value_to_string(number, alphabet):
     '''

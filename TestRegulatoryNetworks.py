@@ -1,10 +1,14 @@
 from RegulatoryNetworks import Solve, EvaluateExpression
 
+def PrettyPrint(list_of_solutions):
+    for solution in list_of_solutions:
+        print solution
+
 
 def RunTests():
     print("Running tests")
-##    print(EvaluateExpression(1, (0,0), (1,0), (-2,1)))
-    Solve(3, [[(0,0,0)],[(0,1,0),(1,0,0)]])
+    PrettyPrint(Solve(3, [[(0,0,0)],[(0,1,0),(1,0,0)]]))
+
 
 def main():
     RunTests()
