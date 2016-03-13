@@ -40,9 +40,8 @@ def Solve(num_nodes, cycles_list):
         # Based on ALL cycles reduce the possibilities to only legal expressions.
         for cycle in cycles_list:
             result[n] = RemoveIllegalExpressions(n, result[n], cycle)
-    print result
-
-
+##    print result
+    PrintSolution(result)
 
 def GenerateExpressions(num_nodes, nodes):
     '''
@@ -85,7 +84,6 @@ def GenerateExpressions(num_nodes, nodes):
 
     expressions.difference_update(duplicates)
     expressions = list(expressions)
-##    print expressions
     return expressions
 
 
@@ -93,7 +91,6 @@ def GenerateExpressions(num_nodes, nodes):
 def RemoveIllegalExpressions(index, expressions, cycle):
     reduced_list = list(expressions)
     n = len(cycle)
-    print "NUMBER OF CYCLE: ", n
     # for each cycle
     for i in range(n):
         to_remove = []
@@ -107,11 +104,32 @@ def RemoveIllegalExpressions(index, expressions, cycle):
 
 def EvaluateExpression(index, prev_state, curr_state, expression):
     i1 = abs(expression[0]) - 1
-##    print prev_state
     v1 = prev_state[i1]^(expression[0] < 0)
     i2 = abs(expression[1]) - 1
     v2 = prev_state[i2]^(expression[1] < 0)
-##    print "v1: ",v1, "v2: ", v2
     result = (curr_state[index-1] == (v1 and v2))
     return result
+
+def PrintSolution(results):
+    '''
+    inputs:
+        results:
+            dictionary where key is node, and value are tuples representing the
+            possible inputs to the node
+    outputs:
+        None
+    '''
+    for node in results:
+        for possibilities in results[node]:
+            value1 = possibilities[0]
+            value2 = possibilities[1]
+
+            print node, " = ", value_to_string(value1), " AND ", value_to_string(value2)
+
+def value_to_string(number):
+    string = ""
+    if number < 0:
+        string += "NOT "
+    string += str(abs(number))
+    return string
 
