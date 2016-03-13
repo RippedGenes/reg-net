@@ -1,8 +1,0 @@
-digraph {
-		D -> B [color=red]
-		C -> B [color=green]
-		D -> C [color=red]
-		B -> C [color=green]
-		C -> D [color=red]
-		D -> D [color=green]
-}
