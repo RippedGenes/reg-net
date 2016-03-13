@@ -5,6 +5,15 @@ import itertools as it
 
 
 def Solve(num_nodes, cycles_list):
+    ''' Return all valid solutions that minimally satisfy given cycle lists.
+
+    TODO
+    '''
+    solution_rules = SolveForRules(num_nodes, cycles_list)
+    return it.product(*solution_rules)
+
+
+def SolveForRules(num_nodes, cycles_list):
     '''
     params:
      num_nodes:
@@ -143,20 +152,22 @@ def ListOfSolutions(results):
             dictionary where key is the node, and value are a list of tuples
             representing the possible inputs to the node
     returns:
-        Solution string
+        List of list of solutions, where each sublist is organized by node of interest.
+         Eg.[["A = .." , "A = ...", ...] , ["B = ...", ...]]
     '''
     solutions_list = []
     alphabet = list(string.ascii_uppercase)
     if len(results) > len(alphabet):
         raise Exception("Cannot pass more than %d nodes" % len(alphabet))
     for node in results:
+        solutions_for_node = []
         for possibilities in results[node]:
             value1 = possibilities[0]
             value2 = possibilities[1]
 
-            solutions_list.append((alphabet[node] + " = " + value_to_string(value1, alphabet) + \
+            solutions_for_node.append((alphabet[node - 1] + " = " + value_to_string(value1, alphabet) + \
                                    " AND " + value_to_string(value2, alphabet)))
-
+        solutions_list.append(solutions_for_node)
     return solutions_list
 
 
