@@ -2,7 +2,8 @@ from RegulatoryNetworks import Solve
 
 
 def RunTests():
-    print "Running tests"
+    Solve(2, [(0,0,0),(1,1,1)])
+    print("Running tests")
     # Solve()
 
 
