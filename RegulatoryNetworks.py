@@ -166,7 +166,7 @@ def ListOfSolutions(results):
             value2 = possibilities[1]
 
             solutions_for_node.append((alphabet[node - 1] + " = " + value_to_string(value1, alphabet) + \
-                                   " AND " + value_to_string(value2, alphabet)))
+                                   " and " + value_to_string(value2, alphabet)))
         solutions_list.append(solutions_for_node)
     return solutions_list
 
@@ -184,6 +184,6 @@ def value_to_string(number, alphabet):
     '''
     string = ""
     if number < 0:
-        string += "NOT "
-    string += alphabet[abs(number)]
+        string += "not "
+    string += alphabet[abs(number) - 1]
     return string
