@@ -121,6 +121,12 @@ def ValidateSolution(solution, num_nodes, input_cycle_list):
 
     return True
 
+def ValidateSolutionComplete(solution, num_nodes, input_cycle_list):
+    '''Validate a single solution is complete.'''
+    initial_states = GenerateInitialStates(num_nodes)
+    cycles_for_solution = FindAllCyclesForSolution(initial_states, solution)
+    return sorted(SortInner(input_cycle_list)) == sorted(SortInner(cycles_for_solution))
+
 def ValiateAllSolutions(solutions, input_cycle_list):
     '''Checks if solutions are valid.
 
@@ -144,6 +150,16 @@ def ValiateAllSolutions(solutions, input_cycle_list):
     print "All solutions are valid"
 
 
+def PrintOnlyCompleteSolutions(solutions, input_cycle_list):
+    '''Use to see if any complete solutions exist'''
+    print "Checking for complete solutions below"
+    for solution in solutions:
+        if ValidateSolutionComplete(solution, len(solution), input_cycle_list) == True:
+            print solution
+
+
+
+
 def TestPrinting():
     ''' Test all pretty printing functions'''
     print("Test Printing: ")
@@ -162,12 +178,16 @@ def TestSolve():
     ValiateAllSolutions(solutions, [[(0,0,0)],[(0,1,0),(1,0,0)]])
 
 
+def TestCompleteness():
+    solutions = Solve(3, [[(0,0,0)],[(0,1,0),(1,0,0)]])
+    PrintOnlyCompleteSolutions(solutions, [[(0,0,0)],[(0,1,0),(1,0,0)]])
+
 
 def TestAll():
     '''Run all our tests.'''
     TestPrinting()
     TestSolve()
-
+    TestCompleteness()
 
 def main():
     TestAll()
