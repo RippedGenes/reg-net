@@ -2,6 +2,8 @@
 
 import string
 import itertools as it
+import networkx as nx
+import matplotlib.pyplot as plt
 
 
 def Solve(num_nodes, cycles_list):
@@ -37,6 +39,8 @@ def Solve(num_nodes, cycles_list):
         for cycle in cycles_list:
             result[n] = RemoveIllegalExpressions(n, result[n], cycle)
         ##    print result
+
+    DrawGraph(result)
     solution_list = ListOfSolutions(result)
     return solution_list
 
@@ -176,3 +180,19 @@ def value_to_string(number, alphabet):
         string += "NOT "
     string += alphabet[abs(number)]
     return string
+
+def DrawGraph(nodes):
+    alphabet = list(string.ascii_uppercase)
+
+    G = nx.DiGraph()
+    for n in nodes:
+        outfrom = nodes[n][0]
+        into = n
+        for out in outfrom:
+##            c = 'green' if out > 0 else 'red'
+            G.add_edges_from([(alphabet[abs(out)], alphabet[into])])
+
+    pos=nx.spring_layout(G)
+##    nx.draw_networkx_edge_labels(G,pos)
+    nx.draw_shell(G)
+    plt.show()
